@@ -148,19 +148,12 @@ with tf.device('/cpu:0'):
     # prepare data in cpu
     x_train_, y_train_ = read_and_decode("train.cifar10", True)
     x_test_, y_test_ = read_and_decode("test.cifar10", False)
-
-    x_train_batch, y_train_batch = tf.train.shuffle_batch(
-        [x_train_, y_train_],
-        batch_size=batch_size,
-        capacity=2000,
-        min_after_dequeue=1000,
-        num_threads=32
-    )  # set the number of threads here
+    # set the number of threads here
+    x_train_batch, y_train_batch = tf.train.shuffle_batch([x_train_, y_train_], \
+        batch_size=batch_size, capacity=2000, min_after_dequeue=1000, num_threads=32)
     # for testing, uses batch instead of shuffle_batch
-    x_test_batch, y_test_batch = tf.train.batch([x_test_, y_test_],
-                                                batch_size=batch_size,
-                                                capacity=50000,
-                                                num_threads=32)
+    x_test_batch, y_test_batch = tf.train.batch([x_test_, y_test_], \
+        batch_size=batch_size, capacity=50000, num_threads=32)
 
     def model(x_crop, y_, reuse):
         """ For more simplified CNN APIs, check tensorlayer.org """
